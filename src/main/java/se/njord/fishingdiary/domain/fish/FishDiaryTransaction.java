@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 
 @Default
 @Stateless
-public class FishTransaction implements FishDiaryAccess {
+public class FishDiaryTransaction implements FishDiaryAccess {
 
     @PersistenceContext(unitName = "fishdiary")
     private EntityManager entityManager;

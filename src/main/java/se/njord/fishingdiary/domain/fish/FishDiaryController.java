@@ -9,16 +9,16 @@ import javax.ws.rs.core.Response;
 
 @Path("/fish")
 @Stateless
-public class FishController {
+public class FishDiaryController {
 
     @Inject
-    private FishService fishService;
+    private FishDiaryService fishDiaryService;
 
     @GET
     @Produces({"application/JSON"})
     public Response showFishes() {
         System.out.println("In Controller");
-        String test = fishService.getFishes();
+        String test = fishDiaryService.getFishes();
         return Response.ok(test).build();
     }
 }
