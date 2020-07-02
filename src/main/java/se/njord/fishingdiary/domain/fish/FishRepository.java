@@ -12,7 +12,7 @@ import java.util.List;
 
 @Default
 @Stateless
-public class FishTransaction implements FishAccess {
+public class FishRepository implements FishAccess {
 
     @PersistenceContext(unitName = "fishdiary")
     private EntityManager entityManager;
