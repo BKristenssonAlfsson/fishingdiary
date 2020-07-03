@@ -1,4 +1,37 @@
 package se.njord.fishingdiary.domain.diary;
 
-public class DiaryDataAccess {
+import se.njord.fishingdiary.util.JsonConverter;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.json.JsonObject;
+import java.util.List;
+
+@Stateless
+public class DiaryDataAccess implements DiaryService{
+
+    private JsonConverter jsonConverter = new JsonConverter();
+
+    @Inject
+    private DiaryAccess diaryAccess;
+
+    private Diary diary = new Diary();
+    private DiaryModel diaryModel = new DiaryModel();
+
+    @Override
+    public DiaryModel createDiary(String username) {
+        Diary response = diary.createDiary();
+        JsonObject jsonObject = jsonConverter.jsonObjectFromString(username);
+
+        diary = diaryAccess.addDiary(response, jsonObject.getString("username"));
+
+        return diaryModel.toModel(diary);
+    }
+
+    @Override
+    public List<DiaryModel> getAllDiaries() {
+        List<Diary> diaries = diaryAccess.getAllDiaries();
+
+        return diaryModel.toModelList(diaries);
+    }
 }
