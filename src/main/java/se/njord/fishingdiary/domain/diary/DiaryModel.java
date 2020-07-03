@@ -7,13 +7,13 @@ import java.util.List;
 public class DiaryModel {
 
     private Long id;
-    private FishModel catches;
+    private List<FishModel> catches;
     private String username;
 
     public DiaryModel() {
     }
 
-    public DiaryModel(FishModel catches, String username) {
+    public DiaryModel(List<FishModel> catches, String username) {
         this.catches = catches;
         this.username = username;
     }
@@ -26,11 +26,11 @@ public class DiaryModel {
         this.id = id;
     }
 
-    public FishModel getCatches() {
+    public List<FishModel> getCatches() {
         return catches;
     }
 
-    public void setCatches(FishModel catches) {
+    public void setCatches(List<FishModel> catches) {
         this.catches = catches;
     }
 
@@ -44,19 +44,23 @@ public class DiaryModel {
 
     public DiaryModel toModel(Diary diary) {
         DiaryModel diaryModel = new DiaryModel();
+        List<FishModel> fishModelList = new ArrayList<>();
+
         diaryModel.setUser(diary.getUser().getUsername());
         diary.getCatches().forEach(fish -> {
             FishModel fishModel = new FishModel();
             fishModel.setName(fish.getName());
             fishModel.setWeight(fish.getWeight());
             fishModel.setLength(fish.getLength());
-            diaryModel.setCatches(fishModel);
+            fishModelList.add(fishModel);
         });
+        diaryModel.setCatches(fishModelList);
         return diaryModel;
     }
 
     public List<DiaryModel> toModelList(List<Diary> diaries) {
         List<DiaryModel> diaryModels = new ArrayList<>();
+        List<FishModel> fishModelList = new ArrayList<>();
 
         diaries.forEach(diary -> {
             DiaryModel diaryModel = new DiaryModel();
@@ -72,9 +76,9 @@ public class DiaryModel {
                 fishModel.setName(fish.getName());
                 fishModel.setWeight(fish.getWeight());
                 fishModel.setLength(fish.getLength());
-                diaryModel.setCatches(fishModel);
+                fishModelList.add(fishModel);
             });
-
+            diaryModel.setCatches(fishModelList);
             diaryModels.add(diaryModel);
         });
 
