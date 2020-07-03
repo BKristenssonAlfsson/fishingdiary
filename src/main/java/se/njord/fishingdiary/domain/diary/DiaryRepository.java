@@ -38,4 +38,12 @@ public class DiaryRepository implements DiaryAccess {
         Query query = entityManager.createNamedQuery("findUser", User.class).setParameter("username", username);
         return (User)query.getSingleResult();
     }
+
+    @Override
+    public Diary getOneDiary(String username) {
+        User user = getUser(username);
+
+        return user.getDiary();
+
+    }
 }

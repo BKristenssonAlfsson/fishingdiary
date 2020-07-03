@@ -21,10 +21,15 @@ public class FishController {
     @GET
     @Produces({"application/JSON"})
     public Response showFishes() {
-        List<Fish> fishModel = fishService.getFishes();
+        List<FishModel> fishModel = fishService.getFishes();
         return Response.ok(fishModel).build();
     }
 
+    /**
+     *
+     * @param fishObject A string that will contain fishtype, weight, length and username
+     * @return inserted fishObject along all entries in that diary and user
+     */
     @POST
     @Produces({"application/JSON"})
     public Response addFish(String fishObject) {

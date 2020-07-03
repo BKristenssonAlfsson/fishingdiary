@@ -1,5 +1,6 @@
 package se.njord.fishingdiary.domain.fish;
 
+import se.njord.fishingdiary.domain.diary.Diary;
 import se.njord.fishingdiary.exception.DuplicateException;
 
 import javax.ejb.Local;
@@ -9,4 +10,5 @@ import java.util.List;
 public interface FishAccess {
     List<Fish> getFishes();
     Fish addFish(Fish fish) throws DuplicateException;
+
 }

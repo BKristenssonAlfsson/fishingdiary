@@ -8,4 +8,5 @@ public interface DiaryAccess {
 
     Diary addDiary(Diary diary, String username);
     List<Diary> getAllDiaries();
+    Diary getOneDiary(String username);
 }
