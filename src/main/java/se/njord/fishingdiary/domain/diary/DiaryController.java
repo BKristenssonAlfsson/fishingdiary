@@ -2,10 +2,7 @@ package se.njord.fishingdiary.domain.diary;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -35,6 +32,18 @@ public class DiaryController {
         try {
             List<DiaryModel> diaryModelList = diaryService.getAllDiaries();
             return Response.ok().entity(diaryModelList).build();
+        } catch ( Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("/{username}")
+    @Produces({"application/JSON"})
+    public Response getDiaryByNumber(@PathParam("username") String username) {
+        try {
+            DiaryModel diaryModel = diaryService.getOneDiary(username);
+            return Response.ok().entity(diaryModel).build();
         } catch ( Exception e ) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }

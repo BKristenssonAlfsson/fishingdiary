@@ -1,10 +1,13 @@
 package se.njord.fishingdiary.domain.fish;
 
+import se.njord.fishingdiary.domain.diary.Diary;
 import se.njord.fishingdiary.exception.MissingVariableException;
 import se.njord.fishingdiary.util.JsonConverter;
 
 import javax.json.JsonObject;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "fish")
@@ -20,13 +23,30 @@ public class Fish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
+
+    @Column
+    private Double length;
+
+    @Column
+    private Double weight;
+
+    @ManyToMany(mappedBy = "catches",
+            cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.REFRESH
+    }, fetch = FetchType.LAZY)
+    private Set<Diary> diaries = new HashSet<>();
 
     public Fish() { }
 
-    public Fish(String name) {
+    public Fish(String name, Double length, Double weight) {
         this.name = name;
+        this.length = length;
+        this.weight = weight;
     }
 
     public void setName(String name) {
@@ -41,15 +61,51 @@ public class Fish {
         return this.name;
     }
 
-    public Fish toEntity(String fishModel) throws MissingVariableException {
+    public Double getLength() {
+        return length;
+    }
+
+    public void setLength(Double length) {
+        this.length = length;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Set<Diary> getDiaries() {
+        return diaries;
+    }
+
+    public void setDiaries(Set<Diary> diaries) {
+        this.diaries = diaries;
+    }
+
+    public Fish toEntity(JsonObject fishModel) throws MissingVariableException {
         Fish fish = new Fish();
-        JsonObject jsonObject = jsonConverter.jsonObjectFromString(fishModel);
         try {
-            fish.name = jsonObject.getString("name");
+            fish.setName(fishModel.getString("name"));
+            fish.setLength(fishModel.getJsonNumber("length").doubleValue());
+            fish.setWeight(fishModel.getJsonNumber("weight").doubleValue());
         } catch ( NullPointerException nullPointerException ) {
-            throw new MissingVariableException("There was no fish added as there was no variable named name");
+            throw new MissingVariableException("One or several variables where missing");
         }
 
         return fish;
+    }
+
+    public void addDiary(Diary diary) {
+        System.out.println();
+        this.diaries.add(diary);
+        diary.getCatches().add(this);
+    }
+
+    public void removeFish(Diary diary) {
+        this.diaries.remove(diary);
+        diary.getCatches().remove(this);
     }
 }

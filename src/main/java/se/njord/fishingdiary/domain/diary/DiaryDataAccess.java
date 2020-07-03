@@ -34,4 +34,11 @@ public class DiaryDataAccess implements DiaryService{
 
         return diaryModel.toModelList(diaries);
     }
+
+    @Override
+    public DiaryModel getOneDiary(String username) {
+        Diary diary = diaryAccess.getOneDiary(username);
+
+        return diaryModel.toModel(diary);
+    }
 }

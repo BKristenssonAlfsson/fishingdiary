@@ -1,0 +1,6 @@
+module add --name=org.postgresql --resources=~/postgresql.jar --dependencies=javax.api,javax.transaction.api
+/subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgresql",driver-class-name=org.postgresql.Driver)
+data-source add --jndi-name=java:/fishdiary --name=fishdiary \
+--connection-url=jdbc:postgresql://localhost:5432/fishdiary --driver-name=postgres --user-name=postgres --password=root
+/subsystem=logging/file-handler=fh:add(level=INFO, file={"relative-to"=>"jboss.server.log.dir", "path"=>"fishdiary.log"}, append=true, autoflush=true)
+/subsystem=logging/logger=se.njord.fishingdiary:add(use-parent-handlers=false,handlers=["fh"])

@@ -5,6 +5,7 @@ import se.njord.fishingdiary.domain.user.User;
 import se.njord.fishingdiary.util.JsonConverter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,13 +24,18 @@ public class Diary {
     @OneToOne(mappedBy = "diary")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.REFRESH
+    }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "diary_fishes",
-            joinColumns = @JoinColumn(name = "diary_id"),
-            inverseJoinColumns = @JoinColumn(name = "fish_id")
+            joinColumns = @JoinColumn(name = "diary_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "fish_id", referencedColumnName = "id")
     )
-    private List<Fish> catches;
+    private List<Fish> catches = new ArrayList<>();
 
     public Diary() {}
 
@@ -62,7 +68,15 @@ public class Diary {
         this.catches = catches;
     }
 
+    public void addFish(Fish fish) {
+        this.catches.add(fish);
+        fish.getDiaries().add(this);
+    }
 
+    public void removeFish(Fish fish) {
+        this.catches.remove(fish);
+        fish.getDiaries().remove(this);
+    }
 
     public Diary createDiary() {
         return new Diary();

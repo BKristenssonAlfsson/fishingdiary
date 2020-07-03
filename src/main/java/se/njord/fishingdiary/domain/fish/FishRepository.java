@@ -1,5 +1,6 @@
 package se.njord.fishingdiary.domain.fish;
 
+import se.njord.fishingdiary.domain.diary.Diary;
 import se.njord.fishingdiary.exception.DuplicateException;
 
 import javax.ejb.Stateless;
@@ -33,6 +34,5 @@ public class FishRepository implements FishAccess {
         } catch (PersistenceException persistenceException) {
             throw new DuplicateException("Fish with name " + fish.getName() + " already exists.");
         }
-
     }
 }

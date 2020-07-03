@@ -1,21 +1,19 @@
 package se.njord.fishingdiary.domain.diary;
 
-import se.njord.fishingdiary.domain.fish.Fish;
-import se.njord.fishingdiary.domain.user.User;
-
+import se.njord.fishingdiary.domain.fish.FishModel;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DiaryModel {
 
     private Long id;
-    private List<Fish> catches = new ArrayList<>();
+    private FishModel catches;
     private String username;
 
     public DiaryModel() {
     }
 
-    public DiaryModel(List<Fish> catches, String username) {
+    public DiaryModel(FishModel catches, String username) {
         this.catches = catches;
         this.username = username;
     }
@@ -28,11 +26,11 @@ public class DiaryModel {
         this.id = id;
     }
 
-    public List<Fish> getCatches() {
+    public FishModel getCatches() {
         return catches;
     }
 
-    public void setCatches(List<Fish> catches) {
+    public void setCatches(FishModel catches) {
         this.catches = catches;
     }
 
@@ -47,6 +45,13 @@ public class DiaryModel {
     public DiaryModel toModel(Diary diary) {
         DiaryModel diaryModel = new DiaryModel();
         diaryModel.setUser(diary.getUser().getUsername());
+        diary.getCatches().forEach(fish -> {
+            FishModel fishModel = new FishModel();
+            fishModel.setName(fish.getName());
+            fishModel.setWeight(fish.getWeight());
+            fishModel.setLength(fish.getLength());
+            diaryModel.setCatches(fishModel);
+        });
         return diaryModel;
     }
 
@@ -61,6 +66,15 @@ public class DiaryModel {
             } catch (NullPointerException npe ) {
                 diaryModel.setUser("No user found");
             }
+
+            diary.getCatches().forEach(fish -> {
+                FishModel fishModel = new FishModel();
+                fishModel.setName(fish.getName());
+                fishModel.setWeight(fish.getWeight());
+                fishModel.setLength(fish.getLength());
+                diaryModel.setCatches(fishModel);
+            });
+
             diaryModels.add(diaryModel);
         });
 

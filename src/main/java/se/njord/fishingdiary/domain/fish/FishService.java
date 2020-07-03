@@ -9,6 +9,6 @@ import java.util.List;
 @Local
 public interface FishService {
 
-    List<Fish> getFishes();
+    List<FishModel> getFishes();
     FishModel addFish(String fishModel) throws DuplicateException, MissingVariableException;
 }

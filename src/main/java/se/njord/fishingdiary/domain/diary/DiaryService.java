@@ -7,4 +7,5 @@ import java.util.List;
 public interface DiaryService {
     DiaryModel createDiary(String username);
     List<DiaryModel> getAllDiaries();
+    DiaryModel getOneDiary(String username);
 }
