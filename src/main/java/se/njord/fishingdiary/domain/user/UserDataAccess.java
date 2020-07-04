@@ -4,6 +4,7 @@ import se.njord.fishingdiary.exception.DuplicateException;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 @Stateless
 public class UserDataAccess implements UserService {
@@ -19,5 +20,14 @@ public class UserDataAccess implements UserService {
         User newUser = userAccess.addUser(user.toEntity(userModel));
 
         return this.userModel.toModel(newUser);
+    }
+
+    @Override
+    public List<UserModel> getAllUsers() {
+        List<User> users =  userAccess.getAllUsers();
+
+        List<UserModel> userModels = this.userModel.toModelList(users);
+
+        return userModels;
     }
 }

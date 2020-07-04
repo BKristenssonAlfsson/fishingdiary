@@ -1,5 +1,8 @@
 package se.njord.fishingdiary.domain.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserModel {
 
     private String username;
@@ -23,5 +26,17 @@ public class UserModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<UserModel> toModelList(List<User> users) {
+        List<UserModel> userModels = new ArrayList<>();
+
+        users.forEach(user -> {
+            UserModel userModel = new UserModel();
+            userModel.username = user.getUsername();
+            userModels.add(userModel);
+        });
+
+        return userModels;
     }
 }
