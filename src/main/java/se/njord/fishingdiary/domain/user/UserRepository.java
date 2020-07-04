@@ -7,6 +7,8 @@ import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Default
 @Stateless
@@ -22,6 +24,17 @@ public class UserRepository implements UserAccess {
             return newUser;
         } catch (PersistenceException persistenceException) {
             throw new DuplicateException("User with name " + newUser.getUsername() + " do already exist");
+        }
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        try {
+            TypedQuery<User> query = entityManager.createNamedQuery("findAllUsers", User.class);
+
+            return query.getResultList();
+        } catch ( Exception e ) {
+            throw new NullPointerException();
         }
     }
 }
